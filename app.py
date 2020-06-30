@@ -26,16 +26,23 @@ def main():
 
 @app.route('/new', methods=['POST'])
 def new_item():
-    return jsonify({"msg" : "Hola desde new item"})
+    nombreIngresado = request.json.get("name", None)
+    if nombreIngresado == "":
+        return jsonify({"msg" : "Debe ingresar un nombre"})
+    queue._queue.append(nombreIngresado)
+    queue.enqueue(nombreIngresado)
+    return jsonify({"msg" : f"Nombre {nombreIngresado} ingresado conforme, faltan {queue.size()-1} personas para ser atendido"})
 
 @app.route('/next', methods=['GET'])
 def next_item():
-    pass
+    if queue.size() > 0:
+        nombreTurno = queue._queue[0]
+        queue.dequeue(nombreTurno)
+        return jsonify({"msg" : f"{nombreTurno} es su turno"})
 
 @app.route('/all', methods=['GET'])
 def all_items():
-    res = queue.size()
-    return jsonify({"msg" : f"Largo de la lista es {res}"})
+    return jsonify(queue.get_queue())
 
 if __name__ == '__main__':
     manager.run()

@@ -11,24 +11,28 @@ class Queue:
         self.auth_token = os.environ.get('AUTH_TOKEN')
         self.client = Client(self.account_sid, self.auth_token)
 
-        self._queue = ["Name 1" , "Name 2", "Name 3"]
+        self._queue = ["Humberto", "Sebastian", "Diego", "Luis", "Jonathan", "Leonardo"]
         # depending on the _mode, the queue has to behave like a FIFO or LIFO
         self._mode = 'FIFO'
 
-    """ def enqueue(self, item):
+    def enqueue(self, nombre):
         message = self.client.messages.create(
-            body = 'This is a test message ',
+            body = f'Hola {nombre}, su requerimiento fu ingresado, faltan {self.size()-1} personas antes que usted',
             from_ = os.environ.get('PHONE'),
             to='+56997796298'
         )
-        print(message.sid) """
             
-    def dequeue(self):
-        pass
+    def dequeue(self, nombreTurno):
+        message = self.client.messages.create(
+            body = f'Hola {nombreTurno}, es su turno',
+            from_ = os.environ.get('PHONE'),
+            to='+56997796298'
+        )
+        return self._queue.pop(0)
 
     def get_queue(self):
-        pass
-    
+        return self._queue
+
     def size(self):
         return len(self._queue)
 
