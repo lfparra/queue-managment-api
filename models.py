@@ -17,7 +17,7 @@ class Queue:
 
     def enqueue(self, nombre):
         message = self.client.messages.create(
-            body = f'Hola {nombre}, su requerimiento fu ingresado, faltan {self.size()-1} personas antes que usted',
+            body = f'Hola {nombre}, su requerimiento fue ingresado, faltan {self.size()-1} personas antes que usted',
             from_ = os.environ.get('PHONE'),
             to='+56997796298'
         )
